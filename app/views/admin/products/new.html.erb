@@ -1,0 +1,11 @@
+<div class="container mt-4">
+  <h1 class="mb-4">New Product</h1>
+
+  <div class="card p-4 shadow-sm">
+    <%= render "form", product: @product %>
+  </div>
+
+  <div class="mt-3">
+    <%= link_to "Back to Products", admin_products_path, class: "btn btn-secondary" %>
+  </div>
+</div>

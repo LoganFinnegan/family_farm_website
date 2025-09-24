@@ -1,0 +1,25 @@
+<div class="container mt-4">
+  <h1><%= @event.title %></h1>
+
+  <p><strong>Description:</strong> <%= @event.description %></p>
+  <p><strong>Date:</strong> <%= @event.date.strftime("%B %d, %Y %I:%M %p") if @event.date %></p>
+  <p><strong>Location:</strong> <%= @event.location %></p>
+  <p><strong>Cost:</strong> <%= @event.cost %></p>
+
+  <% if @event.flyer.attached? %>
+    <div class="my-3">
+      <h5>Flyer</h5>
+      <%= image_tag @event.flyer.variant(resize_to_limit: [400, 300]), class: "img-fluid rounded shadow" %>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <div class="d-flex justify-content-between">
+    <div>
+      <%= link_to "Edit", edit_admin_event_path(@event), class: "btn btn-primary" %>
+      <%= link_to "Delete", admin_event_path(@event), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </div>
+    <%= link_to "Back to Events", admin_events_path, class: "btn btn-secondary" %>
+  </div>
+</div>

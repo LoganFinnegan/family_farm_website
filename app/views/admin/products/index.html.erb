@@ -1,0 +1,64 @@
+<h1 class="mb-4">Products</h1>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-center">Image</th>
+        <th>
+          <%= sort_link(@q, :name, "Name") %>
+          <%= params[:q]&.dig(:s)&.include?("name desc") ? "▼" : (params[:q]&.dig(:s)&.include?("name asc") ? "▲" : "") %>
+        </th>
+        <th>
+          <%= sort_link(@q, :price, "Price") %>
+          <%= params[:q]&.dig(:s)&.include?("price desc") ? "▼" : (params[:q]&.dig(:s)&.include?("price asc") ? "▲" : "") %>
+        </th>
+        <th>
+          <%= sort_link(@q, :stock, "Stock") %>
+          <%= params[:q]&.dig(:s)&.include?("stock desc") ? "▼" : (params[:q]&.dig(:s)&.include?("stock asc") ? "▲" : "") %>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td class="text-center">
+            <% if product.image.attached? %>
+              <div style="width: 100px; height: 100px; overflow: hidden;" class="d-inline-block">
+                <%= image_tag product.image.variant(resize_to_fill: [100, 100]),
+                              class: "img-thumbnail",
+                              style: "object-fit: cover; width: 100%; height: 100%;" %>
+              </div>
+            <% else %>
+              <div class="bg-light d-flex align-items-center justify-content-center"
+                   style="width: 100px; height: 100px;">
+                <span class="text-muted">No image</span>
+              </div>
+            <% end %>
+          </td>
+          <td><%= product.name %></td>
+          <td><%= number_to_currency(product.price) %></td>
+          <td>
+            <% if product.stock > 0 %>
+              <span class="badge bg-success"><%= product.stock %></span>
+            <% else %>
+              <span class="badge bg-danger">Out of stock</span>
+            <% end %>
+          </td>
+          <td>
+            <div class="btn-group" role="group">
+              <%= link_to "Show", admin_product_path(product), class: "btn btn-sm btn-primary" %>
+              <%= link_to "Edit", edit_admin_product_path(product), class: "btn btn-sm btn-warning" %>
+              <%= link_to "Delete", admin_product_path(product), method: :delete,
+                          data: { confirm: "Are you sure?" },
+                          class: "btn btn-sm btn-danger" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "New Product", new_admin_product_path, class: "btn btn-success mt-3" %>

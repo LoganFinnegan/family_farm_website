@@ -1,0 +1,74 @@
+<!-- app/views/pages/welcome.html.erb -->
+
+<%# Hero section %>
+<section class="hero-section position-relative text-white"
+         style="background: url('<%= Event.first&.flyer&.attached? ? url_for(Event.first.flyer) : "https://via.placeholder.com/1200x600?text=Finnegan+Farms" %>') 
+                no-repeat center center; background-size: cover; height: 60vh;">
+  <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.4);"></div>
+  <div class="container h-100 d-flex align-items-center justify-content-center position-relative">
+    <div class="text-center">
+      <h1 class="display-3">Welcome to Finnegan Farms</h1>
+      <p class="lead mt-3">
+        Rooted in tradition, growing in excellence – explore our events, our products, and our services.
+      </p>
+      <div class="mt-4">
+        <%= link_to "Explore Events", events_path, class: "btn btn-primary btn-lg mx-2" %>
+        <%= link_to "Shop Products", products_path, class: "btn btn-success btn-lg mx-2" %>
+        <%= link_to "Our Services", services_path, class: "btn btn-outline-light btn-lg mx-2" %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# Upcoming Events section %>
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4 text-center">Upcoming Events</h2>
+    <div class="row">
+      <% @events.limit(3).each do |event| %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <% if event.flyer.attached? %>
+              <%= image_tag event.flyer.variant(resize_to_limit: [400, 200]), class: "card-img-top" %>
+            <% else %>
+              <%= image_tag "https://via.placeholder.com/400x200?text=Event+Image", class: "card-img-top" %>
+            <% end %>
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to event.title, event_path(event) %></h5>
+              <p class="card-text"><%= truncate(event.description, length: 100) %></p>
+              <%= link_to "See Details", event_path(event), class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<%# Featured Products section %>
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4 text-center">Featured Products</h2>
+    <div class="row">
+      <% @products.limit(3).each do |product| %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <% if product.image.attached? %>
+              <%= image_tag product.image.variant(resize_to_limit: [400, 400]), class: "card-img-top" %>
+            <% else %>
+              <%= image_tag "https://via.placeholder.com/400x400?text=Product+Image", class: "card-img-top" %>
+            <% end %>
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to product.name, product_path(product) %></h5>
+              <p class="card-text"><%= truncate(product.description, length: 80) %></p>
+              <p class="mb-0"><strong>Price: </strong><%= number_to_currency(product.price) %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="text-center mt-4">
+      <%= link_to "View All Products", products_path, class: "btn btn-success btn-lg" %>
+    </div>
+  </div>
+</section>

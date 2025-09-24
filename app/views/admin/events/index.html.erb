@@ -1,0 +1,59 @@
+<h1 class="mb-4">Events</h1>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th class="text-center">Flyer</th>
+        <th>
+          <%= sort_link(@q, :title, "Title") %>
+          <%= params[:q]&.dig(:s)&.include?("title desc") ? "▼" : (params[:q]&.dig(:s)&.include?("title asc") ? "▲" : "") %>
+        </th>
+        <th>
+          <%= sort_link(@q, :date, "Date") %>
+          <%= params[:q]&.dig(:s)&.include?("date desc") ? "▼" : (params[:q]&.dig(:s)&.include?("date asc") ? "▲" : "") %>
+        </th>
+        <th>
+          <%= sort_link(@q, :location, "Location") %>
+          <%= params[:q]&.dig(:s)&.include?("location desc") ? "▼" : (params[:q]&.dig(:s)&.include?("location asc") ? "▲" : "") %>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @events.each do |event| %>
+        <tr>
+          <td class="text-center">
+            <% if event.flyer.attached? %>
+              <div style="width: 100px; height: 100px; overflow: hidden;" class="d-inline-block">
+                <%= image_tag event.flyer.variant(resize_to_fill: [100, 100]),
+                              class: "img-thumbnail",
+                              style: "width: 100%; height: 100%; object-fit: cover;" %>
+              </div>
+            <% else %>
+              <div class="bg-light d-flex align-items-center justify-content-center"
+                   style="width: 100px; height: 100px;">
+                <span class="text-muted">No flyer</span>
+              </div>
+            <% end %>
+          </td>
+          <td><%= event.title %></td>
+          <td><%= event.date.strftime("%B %d, %Y %I:%M %p") if event.date %></td>
+          <td><%= event.location %></td>
+          <td>
+            <div class="btn-group" role="group">
+              <%= link_to "Show", admin_event_path(event), class: "btn btn-sm btn-primary" %>
+              <%= link_to "Edit", edit_admin_event_path(event), class: "btn btn-sm btn-warning" %>
+              <%= link_to "Delete", admin_event_path(event),
+                          method: :delete,
+                          data: { confirm: "Are you sure?" },
+                          class: "btn btn-sm btn-danger" %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "New Event", new_admin_event_path, class: "btn btn-success mt-3" %>
