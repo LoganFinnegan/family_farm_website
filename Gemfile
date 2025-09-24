@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.3.4'
 
 # Core Rails
-gem 'rails', '~> 7.2.1'
+gem 'rails', '~> 8.0.3'
 gem 'pg', '~> 1.1'             # PostgreSQL adapter
 gem 'puma', '>= 5.0'           # App server
 gem "bootstrap", "~> 5.3"
