@@ -1,9 +1,9 @@
 <!-- app/views/pages/about.html.erb -->
 <section class="py-5 bg-light">
   <div class="container">
-    <h1 class="mb-4 text-center">About Finnegan Farms</h1>
+    <h1 class="mb-4 text-center"><%= @content&.title.presence || "About Finnegan Farms" %></h1>
     <p class="lead text-center mb-5">
-      For generations, our family has worked this land with passion and care, blending tradition with sustainable farming practices.
+      <%= @content&.subtitle.presence || "For generations, our family has worked this land with passion and care, blending tradition with sustainable farming practices." %>
     </p>
 
     <div class="row">
@@ -13,7 +13,7 @@
       <div class="col-md-6">
         <h3>Our Story</h3>
         <p>
-          From raising cattle to growing crops, Finnegan Farms has been rooted in the community for decades. 
+          From raising cattle to growing crops, Finnegan Farms has been rooted in the community for decades.
           Today we continue that legacy by providing fresh food, memorable events, and a warm connection to the land.
         </p>
       </div>

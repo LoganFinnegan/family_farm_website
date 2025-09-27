@@ -15,5 +15,6 @@ Rails.application.routes.draw do
     root to: "dashboard#index"
     resources :events
     resources :products
+    resources :page_contents, only: [:index, :edit, :update]
   end
 end

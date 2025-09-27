@@ -1,20 +1,35 @@
 <!-- app/views/pages/welcome.html.erb -->
 
-<%# Hero section %>
-<section class="hero-section position-relative text-white"
-         style="background: url('<%= Event.first&.flyer&.attached? ? url_for(Event.first.flyer) : "https://via.placeholder.com/1200x600?text=Finnegan+Farms" %>') 
-                no-repeat center center; background-size: cover; height: 60vh;">
-  <div class="overlay position-absolute w-100 h-100" style="background-color: rgba(0, 0, 0, 0.4);"></div>
+<%# Compute hero background URL with a local placeholder fallback %>
+<%
+  hero_url =
+    if @content&.hero_image&.attached?
+      url_for(@content.hero_image)
+    else
+      asset_path("hero_placeholder.jpg") # ensure this file exists in app/assets/images/
+    end
+
+  # Single text color class used by BOTH the title and the paragraph
+  text_class = (@content&.text_color == "dark") ? "text-dark" : "text-white"
+%>
+
+<%# Hero section (no overlay) %>
+<section
+  class="hero-section position-relative"
+  style="background: url('<%= hero_url %>') no-repeat center center; background-size: cover; height: 60vh;"
+>
   <div class="container h-100 d-flex align-items-center justify-content-center position-relative">
     <div class="text-center">
-      <h1 class="display-3">Welcome to Finnegan Farms</h1>
-      <p class="lead mt-3">
-        Rooted in tradition, growing in excellence – explore our events, our products, and our services.
+      <h1 class="display-3 <%= text_class %>">
+        <%= @content&.title.presence || "Welcome to Finnegan Farms" %>
+      </h1>
+      <p class="lead mt-3 <%= text_class %>">
+        <%= @content&.subtitle.presence || "Rooted in tradition, growing in excellence – explore our events, our products, and our services." %>
       </p>
       <div class="mt-4">
-        <%= link_to "Explore Events", events_path, class: "btn btn-primary btn-lg mx-2" %>
+        <%= link_to "Explore Events", events_path,   class: "btn btn-primary btn-lg mx-2" %>
         <%= link_to "Shop Products", products_path, class: "btn btn-success btn-lg mx-2" %>
-        <%= link_to "Our Services", services_path, class: "btn btn-outline-light btn-lg mx-2" %>
+        <%= link_to "Our Services", services_path,  class: "btn btn-secondary btn-lg mx-2" %> <!-- now solid too -->
       </div>
     </div>
   </div>
@@ -27,14 +42,14 @@
     <div class="row">
       <% @events.limit(3).each do |event| %>
         <div class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-sm">
             <% if event.flyer.attached? %>
               <%= image_tag event.flyer.variant(resize_to_limit: [400, 200]), class: "card-img-top" %>
             <% else %>
               <%= image_tag "https://via.placeholder.com/400x200?text=Event+Image", class: "card-img-top" %>
             <% end %>
             <div class="card-body">
-              <h5 class="card-title"><%= link_to event.title, event_path(event) %></h5>
+              <h5 class="card-title"><%= link_to event.title, event_path(event), class: "text-decoration-none" %></h5>
               <p class="card-text"><%= truncate(event.description, length: 100) %></p>
               <%= link_to "See Details", event_path(event), class: "btn btn-primary" %>
             </div>
@@ -52,14 +67,14 @@
     <div class="row">
       <% @products.limit(3).each do |product| %>
         <div class="col-md-4 mb-4">
-          <div class="card h-100">
+          <div class="card h-100 shadow-sm">
             <% if product.image.attached? %>
               <%= image_tag product.image.variant(resize_to_limit: [400, 400]), class: "card-img-top" %>
             <% else %>
               <%= image_tag "https://via.placeholder.com/400x400?text=Product+Image", class: "card-img-top" %>
             <% end %>
             <div class="card-body">
-              <h5 class="card-title"><%= link_to product.name, product_path(product) %></h5>
+              <h5 class="card-title"><%= link_to product.name, product_path(product), class: "text-decoration-none" %></h5>
               <p class="card-text"><%= truncate(product.description, length: 80) %></p>
               <p class="mb-0"><strong>Price: </strong><%= number_to_currency(product.price) %></p>
             </div>
