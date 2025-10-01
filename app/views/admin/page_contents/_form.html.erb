@@ -1,0 +1,85 @@
+<%# app/views/admin/page_contents/_form.html.erb %>
+<% page_names = {
+     "welcome_page"  => "Welcome page",
+     "about_page"    => "About page",
+     "services_page" => "Services page"
+   } %>
+<% pretty_name = page_names[@page_content.slug] || @page_content.slug.to_s.humanize %>
+
+<div class="container mt-4">
+  <h1 class="mb-3">Edit <%= pretty_name %> content</h1>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <%= form_with(model: [:admin, @page_content], local: true, html: { class: "needs-validation" }) do |f| %>
+        <% if @page_content.errors.any? %>
+          <div class="alert alert-danger">
+            <h4 class="alert-heading"><%= pluralize(@page_content.errors.count, "error") %> prevented saving:</h4>
+            <ul class="mb-0">
+              <% @page_content.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <!-- Hero Title -->
+        <div class="mb-3">
+          <%= f.label :title, "Hero title", class: "form-label" %>
+          <%= f.text_field :title, class: "form-control", placeholder: "e.g., Welcome to Finnegan Farms" %>
+        </div>
+
+        <!-- Hero Paragraph -->
+        <div class="mb-3">
+          <%= f.label :subtitle, "Hero paragraph", class: "form-label" %>
+          <%= f.text_area :subtitle, rows: 3, class: "form-control",
+                          placeholder: "Short supporting text shown under the title" %>
+        </div>
+
+        <!-- Body (hidden on Welcome page) -->
+        <% unless @page_content.slug == "welcome_page" %>
+          <div class="mb-3">
+            <%= f.label :body, "Body (main content)", class: "form-label" %>
+            <%= f.text_area :body, rows: 6, class: "form-control",
+                            placeholder: "Optional longer text area for this page" %>
+          </div>
+        <% end %>
+
+        <div class="row">
+          <!-- Hero text color -->
+          <div class="col-md-6 mb-3">
+            <%= f.label :text_color, "Text color", class: "form-label" %>
+            <%= f.select :text_color,
+                         options_for_select([["Light (white)", "light"], ["Dark (black)", "dark"]],
+                                            @page_content.text_color),
+                         {},
+                         class: "form-select" %>
+            <div class="form-text">Applies to both the title and paragraph.</div>
+          </div>
+
+          <!-- Hero image -->
+          <div class="col-md-6 mb-3">
+            <%= f.label :hero_image,
+                        (@page_content.slug == "welcome_page" ? "Welcome image" : "Hero image"),
+                        class: "form-label" %>
+            <%= f.file_field :hero_image, class: "form-control" %>
+
+            <% if @page_content.hero_image.attached? %>
+              <div class="mt-2">
+                <%= image_tag @page_content.hero_image.variant(resize_to_limit: [600, 300]),
+                              class: "img-fluid rounded border" %>
+              </div>
+            <% else %>
+              <div class="form-text">No image uploaded yet.</div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <%= f.submit "Save changes", class: "btn btn-primary" %>
+          <%= link_to "Cancel", admin_page_contents_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

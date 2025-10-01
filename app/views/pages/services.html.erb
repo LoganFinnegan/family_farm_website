@@ -1,33 +1,53 @@
-<h1 class="text-center mb-5">Our Services</h1>
+<!-- app/views/pages/services.html.erb -->
 
-<div class="row">
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <%= image_tag "https://picsum.photos/400/250?random=1", class: "card-img-top", alt: "Farm Tours" %>
-      <div class="card-body text-center">
-        <h5 class="card-title">Farm Tours</h5>
-        <p class="card-text">Join us for guided tours around Finnegan Farms and experience life on the farm.</p>
+<%# Pull editable content if provided; otherwise use sensible defaults %>
+<% title    = @content&.title.presence    || "Our Services" %>
+<% subtitle = @content&.subtitle.presence || "What we offer at Finnegan Farms — tours, fresh produce, and community events." %>
+
+<section class="py-5">
+  <div class="container">
+    <h1 class="text-center mb-2"><%= title %></h1>
+    <% if subtitle.present? %>
+      <p class="lead text-center mb-5"><%= subtitle %></p>
+    <% end %>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <%= image_tag "https://picsum.photos/400/250?random=1", class: "card-img-top", alt: "Farm Tours" %>
+          <div class="card-body text-center">
+            <h5 class="card-title">Farm Tours</h5>
+            <p class="card-text">Join us for guided tours around Finnegan Farms and experience life on the farm.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <%= image_tag "https://picsum.photos/400/250?random=2", class: "card-img-top", alt: "Fresh Produce" %>
+          <div class="card-body text-center">
+            <h5 class="card-title">Fresh Produce</h5>
+            <p class="card-text">Seasonal vegetables, fruits, and homemade goods available directly from our farm.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <%= image_tag "https://picsum.photos/400/250?random=3", class: "card-img-top", alt: "Community Events" %>
+          <div class="card-body text-center">
+            <h5 class="card-title">Community Events</h5>
+            <p class="card-text">Special gatherings, workshops, and farm-to-table dinners for all ages.</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <%= image_tag "https://picsum.photos/400/250?random=2", class: "card-img-top", alt: "Fresh Produce" %>
-      <div class="card-body text-center">
-        <h5 class="card-title">Fresh Produce</h5>
-        <p class="card-text">Seasonal vegetables, fruits, and homemade goods available directly from our farm.</p>
+    <%# Optional long-form body text if you add it in PageContent %>
+    <% if @content&.body.present? %>
+      <div class="mt-4">
+        <%= simple_format(@content.body) %>
       </div>
-    </div>
+    <% end %>
   </div>
-
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <%= image_tag "https://picsum.photos/400/250?random=3", class: "card-img-top", alt: "Community Events" %>
-      <div class="card-body text-center">
-        <h5 class="card-title">Community Events</h5>
-        <p class="card-text">Special gatherings, workshops, and farm-to-table dinners for all ages.</p>
-      </div>
-    </div>
-  </div>
-</div>
+</section>

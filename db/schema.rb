@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_20_003005) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_24_202857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,6 +50,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_20_003005) do
     t.string "cost"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "page_contents", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "title"
+    t.text "subtitle"
+    t.text "body"
+    t.string "text_color", default: "light"
+    t.string "overlay_color", default: "#000000"
+    t.integer "overlay_opacity", default: 40
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_page_contents_on_slug", unique: true
   end
 
   create_table "products", force: :cascade do |t|
